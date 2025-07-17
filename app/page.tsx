@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Calculator, GraduationCap, Moon, Sun, Download, RotateCcw, Info } from "lucide-react"
+import { Terminal, Shield, Eye, EyeOff, Download, RotateCcw, Info, Zap, Lock, Cpu } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -22,18 +22,37 @@ export default function CGPACalculator() {
   const [selectedSemester, setSelectedSemester] = useState<string>("")
   const [selectedSemesters, setSelectedSemesters] = useState<string[]>([])
   const [grades, setGrades] = useState<Record<string, GradeEntry[]>>({})
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(true)
   const [showLegend, setShowLegend] = useState(false)
-  const [showPredictor, setShowPredictor] = useState(false)
-  const [targetCGPA, setTargetCGPA] = useState("")
+  const [terminalText, setTerminalText] = useState("")
+  const [showMatrix, setShowMatrix] = useState(false)
+
+  // Terminal typing effect
+  useEffect(() => {
+    const text = "root@cybersec:~$ ./cgpa_calculator --init"
+    let i = 0
+    const timer = setInterval(() => {
+      if (i < text.length) {
+        setTerminalText(text.slice(0, i + 1))
+        i++
+      } else {
+        clearInterval(timer)
+      }
+    }, 50)
+    return () => clearInterval(timer)
+  }, [])
+
+  // Matrix rain effect toggle
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setShowMatrix((prev) => !prev)
+    }, 10000)
+    return () => clearInterval(interval)
+  }, [])
 
   useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark")
-    } else {
-      document.documentElement.classList.remove("dark")
-    }
-  }, [darkMode])
+    document.documentElement.classList.add("dark")
+  }, [])
 
   const calculateGPA = (semester: string): number => {
     const semesterGrades = grades[semester] || []
@@ -100,75 +119,145 @@ export default function CGPACalculator() {
   }
 
   const exportToPDF = () => {
-    // Simple implementation - in a real app, you'd use jsPDF or html2pdf
     const content =
       mode === "semester"
-        ? `Semester ${selectedSemester} GPA: ${calculateGPA(selectedSemester).toFixed(2)}`
-        : `Overall CGPA: ${calculateCGPA().toFixed(2)}`
+        ? `[CLASSIFIED] Semester ${selectedSemester} GPA: ${calculateGPA(selectedSemester).toFixed(2)}`
+        : `[CLASSIFIED] Overall CGPA: ${calculateCGPA().toFixed(2)}`
 
     const blob = new Blob([content], { type: "text/plain" })
     const url = URL.createObjectURL(blob)
     const a = document.createElement("a")
     a.href = url
-    a.download = `${mode === "semester" ? "GPA" : "CGPA"}_Report.txt`
+    a.download = `${mode === "semester" ? "GPA" : "CGPA"}_Report_CLASSIFIED.txt`
     a.click()
     URL.revokeObjectURL(url)
   }
 
   return (
-    <div
-      className={`min-h-screen transition-colors duration-300 ${darkMode ? "dark bg-gray-900" : "bg-gradient-to-br from-blue-50 to-indigo-100"}`}
-    >
-      <div className="container mx-auto px-4 py-8">
-        {/* Header */}
-        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-8">
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <GraduationCap className="h-8 w-8 text-blue-600 dark:text-blue-400" />
-            <h1 className="text-4xl font-bold text-gray-800 dark:text-white">CGPA Calculator</h1>
+    <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
+      {/* Matrix Rain Background */}
+      {showMatrix && (
+        <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
+          <div className="matrix-rain">
+            {Array.from({ length: 20 }).map((_, i) => (
+              <div
+                key={i}
+                className="matrix-column"
+                style={{
+                  left: `${i * 5}%`,
+                  animationDelay: `${Math.random() * 2}s`,
+                  animationDuration: `${3 + Math.random() * 2}s`,
+                }}
+              >
+                {Array.from({ length: 20 }).map((_, j) => (
+                  <span key={j} className="matrix-char">
+                    {String.fromCharCode(0x30a0 + Math.random() * 96)}
+                  </span>
+                ))}
+              </div>
+            ))}
           </div>
-          <p className="text-gray-600 dark:text-gray-300 text-lg">B.E Cyber Security • Anna University • R2023</p>
+        </div>
+      )}
 
-          {/* Controls */}
-          <div className="flex items-center justify-center gap-4 mt-6">
-            <Button variant="outline" size="sm" onClick={() => setDarkMode(!darkMode)} className="gap-2">
-              {darkMode ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-              {darkMode ? "Light" : "Dark"}
-            </Button>
+      <div className="container mx-auto px-4 py-8 relative z-10">
+        {/* Terminal Header */}
+        <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+          <div className="bg-gray-900 border border-green-500 rounded-lg p-4 mb-6 shadow-lg shadow-green-500/20">
+            <div className="flex items-center gap-2 mb-2">
+              <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+              <span className="ml-4 text-green-400 text-sm">Terminal - CGPA_CALCULATOR v2.0.23</span>
+            </div>
+            <div className="text-green-400 font-mono text-sm">
+              {terminalText}
+              <span className="animate-pulse">|</span>
+            </div>
+          </div>
 
-            <Dialog open={showLegend} onOpenChange={setShowLegend}>
-              <DialogTrigger asChild>
-                <Button variant="outline" size="sm" className="gap-2 bg-transparent">
-                  <Info className="h-4 w-4" />
-                  Grade Legend
-                </Button>
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Anna University R2023 Grading Scale</DialogTitle>
-                </DialogHeader>
-                <div className="grid grid-cols-2 gap-4">
-                  {Object.entries(gradeScale).map(([grade, points]) => (
-                    <div
-                      key={grade}
-                      className="flex justify-between items-center p-2 bg-gray-50 dark:bg-gray-800 rounded"
-                    >
-                      <span className="font-semibold">{grade}</span>
-                      <Badge variant="secondary">{points} points</Badge>
-                    </div>
-                  ))}
-                </div>
-              </DialogContent>
-            </Dialog>
+          <div className="text-center">
+            <div className="flex items-center justify-center gap-3 mb-4">
+              <Shield className="h-8 w-8 text-cyan-400 animate-pulse" />
+              <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400">
+                CGPA CALCULATOR
+              </h1>
+              <Terminal className="h-8 w-8 text-green-400" />
+            </div>
+            <div className="text-cyan-400 text-lg mb-2">
+              <span className="text-red-400">[CLASSIFIED]</span> B.E Cyber Security • Anna University • R2023
+            </div>
+            <div className="text-xs text-gray-500 mb-6">
+              Security Level: <span className="text-yellow-400">RESTRICTED</span> | Access Level:{" "}
+              <span className="text-green-400">AUTHORIZED</span>
+            </div>
 
-            <Button variant="outline" size="sm" onClick={clearAll} className="gap-2 bg-transparent">
-              <RotateCcw className="h-4 w-4" />
-              Clear All
-            </Button>
+            {/* Control Panel */}
+            <div className="flex items-center justify-center gap-4 mt-6">
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setDarkMode(!darkMode)}
+                className="gap-2 bg-gray-900 border-green-500 text-green-400 hover:bg-green-500/10"
+              >
+                {darkMode ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                {darkMode ? "NIGHT_VISION" : "DAY_MODE"}
+              </Button>
 
-            <Button variant="outline" size="sm" onClick={exportToPDF} className="gap-2 bg-transparent">
-              <Download className="h-4 w-4" />
-              Export PDF
-            </Button>
+              <Dialog open={showLegend} onOpenChange={setShowLegend}>
+                <DialogTrigger asChild>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="gap-2 bg-gray-900 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                  >
+                    <Info className="h-4 w-4" />
+                    GRADE_LEGEND
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-gray-900 border-green-500 text-green-400">
+                  <DialogHeader>
+                    <DialogTitle className="text-cyan-400">
+                      <Lock className="inline h-4 w-4 mr-2" />
+                      ANNA UNIVERSITY R2023 GRADING MATRIX
+                    </DialogTitle>
+                  </DialogHeader>
+                  <div className="grid grid-cols-2 gap-4">
+                    {Object.entries(gradeScale).map(([grade, points]) => (
+                      <div
+                        key={grade}
+                        className="flex justify-between items-center p-2 bg-gray-800 border border-green-500/30 rounded"
+                      >
+                        <span className="font-bold text-yellow-400">{grade}</span>
+                        <Badge variant="secondary" className="bg-green-500/20 text-green-400">
+                          {points} pts
+                        </Badge>
+                      </div>
+                    ))}
+                  </div>
+                </DialogContent>
+              </Dialog>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={clearAll}
+                className="gap-2 bg-gray-900 border-red-500 text-red-400 hover:bg-red-500/10"
+              >
+                <RotateCcw className="h-4 w-4" />
+                RESET_ALL
+              </Button>
+
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={exportToPDF}
+                className="gap-2 bg-gray-900 border-yellow-500 text-yellow-400 hover:bg-yellow-500/10"
+              >
+                <Download className="h-4 w-4" />
+                EXPORT_DATA
+              </Button>
+            </div>
           </div>
         </motion.div>
 
@@ -178,11 +267,11 @@ export default function CGPACalculator() {
           animate={{ opacity: 1, scale: 1 }}
           className="max-w-md mx-auto mb-8"
         >
-          <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
+          <Card className="bg-gray-900 border-green-500 shadow-lg shadow-green-500/20">
             <CardHeader>
-              <CardTitle className="text-center flex items-center justify-center gap-2">
-                <Calculator className="h-5 w-5" />
-                Calculator Mode
+              <CardTitle className="text-center flex items-center justify-center gap-2 text-cyan-400">
+                <Cpu className="h-5 w-5" />
+                OPERATION MODE
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -190,16 +279,24 @@ export default function CGPACalculator() {
                 <Button
                   variant={mode === "semester" ? "default" : "outline"}
                   onClick={() => setMode("semester")}
-                  className="w-full"
+                  className={`w-full ${
+                    mode === "semester"
+                      ? "bg-green-500 text-black hover:bg-green-400"
+                      : "bg-gray-800 border-green-500 text-green-400 hover:bg-green-500/10"
+                  }`}
                 >
-                  Semester GPA
+                  SEMESTER_GPA
                 </Button>
                 <Button
                   variant={mode === "overall" ? "default" : "outline"}
                   onClick={() => setMode("overall")}
-                  className="w-full"
+                  className={`w-full ${
+                    mode === "overall"
+                      ? "bg-cyan-500 text-black hover:bg-cyan-400"
+                      : "bg-gray-800 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                  }`}
                 >
-                  Overall CGPA
+                  OVERALL_CGPA
                 </Button>
               </div>
             </CardContent>
@@ -250,19 +347,22 @@ function SemesterMode({ selectedSemester, setSelectedSemester, grades, updateGra
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       {/* Semester Selection */}
-      <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
+      <Card className="bg-gray-900 border-green-500 shadow-lg shadow-green-500/20">
         <CardHeader>
-          <CardTitle>Select Semester</CardTitle>
+          <CardTitle className="text-green-400">
+            <Zap className="inline h-5 w-5 mr-2" />
+            SELECT TARGET SEMESTER
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <Select value={selectedSemester} onValueChange={setSelectedSemester}>
-            <SelectTrigger>
-              <SelectValue placeholder="Choose a semester" />
+            <SelectTrigger className="bg-gray-800 border-green-500 text-green-400">
+              <SelectValue placeholder=">>> Choose semester to analyze" />
             </SelectTrigger>
-            <SelectContent>
+            <SelectContent className="bg-gray-900 border-green-500">
               {Object.keys(subjectData).map((semester) => (
-                <SelectItem key={semester} value={semester}>
-                  Semester {semester}
+                <SelectItem key={semester} value={semester} className="text-green-400 hover:bg-green-500/10">
+                  SEMESTER_{semester}.exe
                 </SelectItem>
               ))}
             </SelectContent>
@@ -279,9 +379,12 @@ function SemesterMode({ selectedSemester, setSelectedSemester, grades, updateGra
             exit={{ opacity: 0, y: -20 }}
             className="space-y-4"
           >
-            <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
+            <Card className="bg-gray-900 border-cyan-500 shadow-lg shadow-cyan-500/20">
               <CardHeader>
-                <CardTitle>Semester {selectedSemester} Subjects</CardTitle>
+                <CardTitle className="text-cyan-400">
+                  <Shield className="inline h-5 w-5 mr-2" />
+                  SEMESTER_{selectedSemester} MODULES
+                </CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid gap-4">
@@ -291,13 +394,13 @@ function SemesterMode({ selectedSemester, setSelectedSemester, grades, updateGra
                       initial={{ opacity: 0, x: -20 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: index * 0.1 }}
-                      className="flex items-center justify-between p-4 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                      className="flex items-center justify-between p-4 bg-gray-800 border border-green-500/30 rounded-lg hover:border-green-500/60 transition-colors"
                     >
                       <div className="flex-1">
-                        <h3 className="font-semibold text-gray-800 dark:text-white">{subject.code}</h3>
-                        <p className="text-sm text-gray-600 dark:text-gray-300">{subject.name}</p>
-                        <Badge variant="secondary" className="mt-1">
-                          {subject.credits} credits
+                        <h3 className="font-bold text-yellow-400 font-mono">{subject.code}</h3>
+                        <p className="text-sm text-green-400">{subject.name}</p>
+                        <Badge variant="secondary" className="mt-1 bg-cyan-500/20 text-cyan-400">
+                          {subject.credits} CREDITS
                         </Badge>
                       </div>
                       <div className="ml-4">
@@ -305,12 +408,12 @@ function SemesterMode({ selectedSemester, setSelectedSemester, grades, updateGra
                           value={grades[selectedSemester]?.find((g) => g.subjectCode === subject.code)?.grade || ""}
                           onValueChange={(value) => updateGrade(selectedSemester, subject.code, value as Grade)}
                         >
-                          <SelectTrigger className="w-24">
-                            <SelectValue placeholder="Grade" />
+                          <SelectTrigger className="w-24 bg-gray-700 border-yellow-500 text-yellow-400">
+                            <SelectValue placeholder="--" />
                           </SelectTrigger>
-                          <SelectContent>
+                          <SelectContent className="bg-gray-900 border-yellow-500">
                             {Object.keys(gradeScale).map((grade) => (
-                              <SelectItem key={grade} value={grade}>
+                              <SelectItem key={grade} value={grade} className="text-yellow-400 hover:bg-yellow-500/10">
                                 {grade}
                               </SelectItem>
                             ))}
@@ -329,15 +432,18 @@ function SemesterMode({ selectedSemester, setSelectedSemester, grades, updateGra
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.3 }}
             >
-              <Card className="backdrop-blur-sm bg-gradient-to-r from-blue-500/20 to-purple-500/20 border-0 shadow-xl">
+              <Card className="bg-gradient-to-r from-gray-900 via-green-900/20 to-gray-900 border-green-500 shadow-lg shadow-green-500/30">
                 <CardContent className="text-center py-8">
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
-                    Semester {selectedSemester} GPA
+                  <h2 className="text-2xl font-bold text-green-400 mb-2 font-mono">
+                    [DECRYPTED] SEMESTER_{selectedSemester} GPA
                   </h2>
-                  <div className="text-5xl font-bold text-blue-600 dark:text-blue-400">
+                  <div className="text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-cyan-400 font-mono">
                     {calculateGPA(selectedSemester).toFixed(2)}
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">Grade Point Average</p>
+                  <p className="text-cyan-400 mt-2 font-mono">GRADE_POINT_AVERAGE.exe</p>
+                  <div className="mt-4 text-xs text-gray-500">
+                    Status: <span className="text-green-400">CALCULATION_COMPLETE</span>
+                  </div>
                 </CardContent>
               </Card>
             </motion.div>
@@ -358,9 +464,12 @@ function OverallMode({ selectedSemesters, setSelectedSemesters, grades, updateGr
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       {/* Semester Selection */}
-      <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
+      <Card className="bg-gray-900 border-cyan-500 shadow-lg shadow-cyan-500/20">
         <CardHeader>
-          <CardTitle>Select Semesters</CardTitle>
+          <CardTitle className="text-cyan-400">
+            <Terminal className="inline h-5 w-5 mr-2" />
+            SELECT SEMESTERS FOR ANALYSIS
+          </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="grid grid-cols-2 md:grid-cols-5 gap-2">
@@ -369,9 +478,13 @@ function OverallMode({ selectedSemesters, setSelectedSemesters, grades, updateGr
                 key={semester}
                 variant={selectedSemesters.includes(semester) ? "default" : "outline"}
                 onClick={() => toggleSemester(semester)}
-                className="w-full"
+                className={`w-full font-mono ${
+                  selectedSemesters.includes(semester)
+                    ? "bg-cyan-500 text-black hover:bg-cyan-400"
+                    : "bg-gray-800 border-cyan-500 text-cyan-400 hover:bg-cyan-500/10"
+                }`}
               >
-                Sem {semester}
+                SEM_{semester}
               </Button>
             ))}
           </div>
@@ -387,42 +500,49 @@ function OverallMode({ selectedSemesters, setSelectedSemesters, grades, updateGr
             exit={{ opacity: 0, y: -20 }}
             className="space-y-6"
           >
-            {selectedSemesters.map((semester, semIndex) => (
+            {selectedSemesters.map((semester: string, semIndex: number) => (
               <motion.div
                 key={semester}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: semIndex * 0.1 }}
               >
-                <Card className="backdrop-blur-sm bg-white/80 dark:bg-gray-800/80 border-0 shadow-xl">
+                <Card className="bg-gray-900 border-green-500/50 shadow-lg shadow-green-500/10">
                   <CardHeader>
-                    <CardTitle>Semester {semester}</CardTitle>
+                    <CardTitle className="text-green-400 font-mono">
+                      <Lock className="inline h-4 w-4 mr-2" />
+                      SEMESTER_{semester}_MODULES.dat
+                    </CardTitle>
                   </CardHeader>
                   <CardContent>
                     <div className="grid gap-3">
                       {subjectData[semester]?.map((subject, index) => (
                         <div
                           key={subject.code}
-                          className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg"
+                          className="flex items-center justify-between p-3 bg-gray-800 border border-green-500/20 rounded-lg hover:border-green-500/40 transition-colors"
                         >
                           <div className="flex-1">
-                            <h4 className="font-medium text-gray-800 dark:text-white text-sm">
+                            <h4 className="font-medium text-yellow-400 text-sm font-mono">
                               {subject.code} - {subject.name}
                             </h4>
-                            <Badge variant="secondary" className="mt-1 text-xs">
-                              {subject.credits} credits
+                            <Badge variant="secondary" className="mt-1 text-xs bg-cyan-500/20 text-cyan-400">
+                              {subject.credits} CR
                             </Badge>
                           </div>
                           <Select
                             value={grades[semester]?.find((g) => g.subjectCode === subject.code)?.grade || ""}
                             onValueChange={(value) => updateGrade(semester, subject.code, value as Grade)}
                           >
-                            <SelectTrigger className="w-20">
-                              <SelectValue placeholder="Grade" />
+                            <SelectTrigger className="w-20 bg-gray-700 border-yellow-500 text-yellow-400">
+                              <SelectValue placeholder="--" />
                             </SelectTrigger>
-                            <SelectContent>
+                            <SelectContent className="bg-gray-900 border-yellow-500">
                               {Object.keys(gradeScale).map((grade) => (
-                                <SelectItem key={grade} value={grade}>
+                                <SelectItem
+                                  key={grade}
+                                  value={grade}
+                                  className="text-yellow-400 hover:bg-yellow-500/10"
+                                >
                                   {grade}
                                 </SelectItem>
                               ))}
@@ -442,15 +562,16 @@ function OverallMode({ selectedSemesters, setSelectedSemesters, grades, updateGr
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.5 }}
             >
-              <Card className="backdrop-blur-sm bg-gradient-to-r from-green-500/20 to-blue-500/20 border-0 shadow-xl">
+              <Card className="bg-gradient-to-r from-gray-900 via-cyan-900/20 to-gray-900 border-cyan-500 shadow-lg shadow-cyan-500/30">
                 <CardContent className="text-center py-8">
-                  <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Overall CGPA</h2>
-                  <div className="text-6xl font-bold text-green-600 dark:text-green-400">
+                  <h2 className="text-2xl font-bold text-cyan-400 mb-2 font-mono">[CLASSIFIED] OVERALL CGPA</h2>
+                  <div className="text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-blue-400 to-purple-400 font-mono">
                     {calculateCGPA().toFixed(2)}
                   </div>
-                  <p className="text-gray-600 dark:text-gray-300 mt-2">Cumulative Grade Point Average</p>
-                  <div className="mt-4 text-sm text-gray-500 dark:text-gray-400">
-                    Based on {selectedSemesters.length} semester{selectedSemesters.length !== 1 ? "s" : ""}
+                  <p className="text-green-400 mt-2 font-mono">CUMULATIVE_GRADE_POINT_AVERAGE.exe</p>
+                  <div className="mt-4 text-sm text-gray-400 font-mono">
+                    Analyzed {selectedSemesters.length} semester{selectedSemesters.length !== 1 ? "s" : ""} | Status:{" "}
+                    <span className="text-green-400">SECURE</span>
                   </div>
                 </CardContent>
               </Card>

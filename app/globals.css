@@ -58,61 +58,254 @@
   }
 }
 
-/* Custom animations */
-@keyframes float {
-  0%,
+/* Cybersecurity Terminal Theme */
+@import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap");
+
+body {
+  font-family: "JetBrains Mono", "Courier New", monospace;
+  background: #000000;
+  color: #00ff00;
+}
+
+/* Matrix Rain Effect */
+.matrix-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.matrix-column {
+  position: absolute;
+  top: -100%;
+  width: 20px;
+  height: 100vh;
+  animation: matrix-fall linear infinite;
+}
+
+.matrix-char {
+  display: block;
+  font-size: 14px;
+  color: #00ff00;
+  opacity: 0.8;
+  text-shadow: 0 0 5px #00ff00;
+}
+
+@keyframes matrix-fall {
+  0% {
+    transform: translateY(-100vh);
+  }
   100% {
-    transform: translateY(0px);
-  }
-  50% {
-    transform: translateY(-10px);
+    transform: translateY(100vh);
   }
 }
 
-.float-animation {
-  animation: float 3s ease-in-out infinite;
+/* Terminal Glow Effects */
+.terminal-glow {
+  box-shadow: 0 0 5px #00ff00, 0 0 10px #00ff00, 0 0 15px #00ff00, 0 0 20px #00ff00;
 }
 
-/* Glassmorphism effect */
-.glass {
-  backdrop-filter: blur(16px) saturate(180%);
-  -webkit-backdrop-filter: blur(16px) saturate(180%);
-  background-color: rgba(255, 255, 255, 0.75);
-  border: 1px solid rgba(209, 213, 219, 0.3);
+/* Cyber Grid Background */
+.cyber-grid {
+  background-image: linear-gradient(rgba(0, 255, 0, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 0, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
 }
 
-.dark .glass {
-  background-color: rgba(17, 24, 39, 0.75);
-  border: 1px solid rgba(75, 85, 99, 0.3);
+/* Glitch Effect */
+@keyframes glitch {
+  0% {
+    transform: translate(0);
+  }
+  20% {
+    transform: translate(-2px, 2px);
+  }
+  40% {
+    transform: translate(-2px, -2px);
+  }
+  60% {
+    transform: translate(2px, 2px);
+  }
+  80% {
+    transform: translate(2px, -2px);
+  }
+  100% {
+    transform: translate(0);
+  }
 }
 
-/* Smooth transitions */
-* {
-  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+.glitch {
+  animation: glitch 0.3s infinite;
 }
 
-/* Custom scrollbar */
+/* Neon Text Effects */
+.neon-text {
+  text-shadow: 0 0 5px currentColor, 0 0 10px currentColor, 0 0 15px currentColor, 0 0 20px currentColor;
+}
+
+/* Cyber Button Styles */
+.cyber-button {
+  position: relative;
+  background: transparent;
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  padding: 8px 16px;
+  font-family: "JetBrains Mono", monospace;
+  text-transform: uppercase;
+  transition: all 0.3s ease;
+}
+
+.cyber-button:hover {
+  background: #00ff00;
+  color: #000000;
+  box-shadow: 0 0 20px #00ff00;
+}
+
+.cyber-button::before {
+  content: "";
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #00ff00, #00ffff, #ff00ff, #ffff00);
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cyber-button:hover::before {
+  opacity: 1;
+}
+
+/* Scrollbar Styling */
 ::-webkit-scrollbar {
   width: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  background: transparent;
+  background: #000000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(156, 163, 175, 0.5);
+  background: #00ff00;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(156, 163, 175, 0.7);
+  background: #00ffff;
 }
 
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.5);
+/* Terminal Cursor */
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
 }
 
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(75, 85, 99, 0.7);
+.cursor {
+  animation: blink 1s infinite;
+}
+
+/* Cyber Card Styles */
+.cyber-card {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid #00ff00;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.3), inset 0 0 10px rgba(0, 255, 0, 0.1);
+}
+
+.cyber-card:hover {
+  border-color: #00ffff;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 20px rgba(0, 255, 255, 0.1);
+}
+
+/* Loading Animation */
+@keyframes loading {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}
+
+.loading-bar {
+  height: 2px;
+  background: #00ff00;
+  animation: loading 2s ease-in-out infinite;
+}
+
+/* Holographic Effect */
+.holographic {
+  background: linear-gradient(
+    45deg,
+    transparent,
+    rgba(0, 255, 0, 0.1),
+    transparent,
+    rgba(0, 255, 255, 0.1),
+    transparent
+  );
+  background-size: 200% 200%;
+  animation: holographic 3s ease-in-out infinite;
+}
+
+@keyframes holographic {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+/* Scan Line Effect */
+.scan-lines::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 0, 0.03) 2px,
+    rgba(0, 255, 0, 0.03) 4px
+  );
+  pointer-events: none;
+}
+
+/* Data Stream Effect */
+@keyframes data-stream {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.data-stream {
+  position: relative;
+  overflow: hidden;
+}
+
+.data-stream::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0, 255, 0, 0.2), transparent);
+  animation: data-stream 2s ease-in-out infinite;
 }
