@@ -1,30 +1,35 @@
-# Anna University CGPA
+# 🎓 CGPA Calculator Web App - B.E Cyber Security (Anna University R2023)
 
-*Automatically synced with your [v0.dev](https://v0.dev) deployments*
+A sleek, modern CGPA & GPA calculator built for **B.E Cyber Security students (Anna University - Regulation 2023)**. This web app helps students calculate their semester GPA and overall CGPA accurately with an interactive and responsive UI.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/aadhis-projects-1fb669c2/v0-cgpa-calculator)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.dev-black?style=for-the-badge)](https://v0.dev/chat/projects/4k28uiSxTyj)
+## 🚀 Features
 
-## Overview
+- ✅ Semester-wise GPA Calculator (Sem 1 to Sem 5)
+- ✅ Overall CGPA Calculator across semesters
+- ✅ Tailored subject list with credits per Anna Univ R2023
+- ✅ Grade scale as per Anna University (O, A+, A, etc.)
+- ✅ Grade selector for each subject
+- ✅ Instant GPA/CGPA calculation
+- ✅ Animated UI with Framer Motion
+- ✅ Responsive design with Tailwind CSS
+- ✅ Dark mode toggle 🌙/🌞
+- ✅ Export results as PDF
+- ✅ CGPA Predictor (enter target CGPA → get suggestions)
 
-This repository will stay in sync with your deployed chats on [v0.dev](https://v0.dev).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.dev](https://v0.dev).
+---
 
-## Deployment
+## 📚 Curriculum Data
 
-Your project is live at:
+Includes subject codes, names, and credits for:
+- Semester 1 to 5
+- Ordered by Theory → Laboratory
+- Excludes non-credit courses (Library, Mentoring)
 
-**[https://vercel.com/aadhis-projects-1fb669c2/v0-cgpa-calculator](https://vercel.com/aadhis-projects-1fb669c2/v0-cgpa-calculator)**
-
-## Build your app
-
-Continue building your app on:
-
-**[https://v0.dev/chat/projects/4k28uiSxTyj](https://v0.dev/chat/projects/4k28uiSxTyj)**
-
-## How It Works
-
-1. Create and modify your project using [v0.dev](https://v0.dev)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+Example:
+```ts
+{
+  code: "CH3124",
+  name: "Engineering Chemistry",
+  credit: 3,
+  semester: 1
+}
