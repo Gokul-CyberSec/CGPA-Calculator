@@ -2,7 +2,22 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Terminal, Shield, Eye, EyeOff, Download, RotateCcw, Info, Zap, Lock, Cpu } from "lucide-react"
+import {
+  Terminal,
+  Shield,
+  Eye,
+  EyeOff,
+  Download,
+  RotateCcw,
+  Info,
+  Zap,
+  Lock,
+  Cpu,
+  Github,
+  Linkedin,
+  Mail,
+  Instagram,
+} from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
@@ -168,7 +183,7 @@ export default function CGPACalculator() {
               <div className="w-3 h-3 bg-red-500 rounded-full"></div>
               <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
               <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-              <span className="ml-4 text-green-400 text-sm">Terminal - CGPA_CALCULATOR v2.0.23</span>
+              <span className="ml-4 text-green-400 text-sm">Terminal - CGPA_CALCULATOR version.0.23</span>
             </div>
             <div className="text-green-400 font-mono text-sm">
               {terminalText}
@@ -185,10 +200,10 @@ export default function CGPACalculator() {
               <Terminal className="h-8 w-8 text-green-400" />
             </div>
             <div className="text-cyan-400 text-lg mb-2">
-              <span className="text-red-400">[CLASSIFIED]</span> B.E Cyber Security • Anna University • R2023
+              <span className="text-red-400">[CLASSIFIED]</span> B.E Cyber Security • SRM VEC • R2023
             </div>
             <div className="text-xs text-gray-500 mb-6">
-              Security Level: <span className="text-yellow-400">RESTRICTED</span> | Access Level:{" "}
+              Security Level: <span className="text-red-700">RESTRICTED</span> | Access Level:{" "}
               <span className="text-green-400">AUTHORIZED</span>
             </div>
 
@@ -338,6 +353,80 @@ export default function CGPACalculator() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Footer */}
+        <motion.footer
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1 }}
+          className="mt-16 border-t border-green-500/30 pt-8"
+        >
+          <div className="bg-gray-900 border border-green-500/50 rounded-lg p-6 shadow-lg shadow-green-500/20">
+            <div className="text-center space-y-4">
+              {/* Copyright */}
+              <div className="text-green-400 font-mono text-sm">
+                <span className="text-cyan-400">[SYSTEM_INFO]</span> © 2025 Gokul Amaran. All rights reserved.
+              </div>
+
+              {/* Social Links */}
+              <div className="flex items-center justify-center gap-6">
+                <a
+                  href="https://github.com/Microchip007/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-3 py-2 bg-gray-800 border border-green-500/30 rounded-lg hover:border-green-500 hover:bg-green-500/10 transition-all duration-300"
+                >
+                  <Github className="h-4 w-4 text-green-400 group-hover:text-green-300" />
+                  <span className="text-green-400 group-hover:text-green-300 font-mono text-sm">{""}</span>
+                </a>
+
+                <a
+                  href="https://linkedin.com/in/gokulamaran"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-3 py-2 bg-gray-800 border border-cyan-500/30 rounded-lg hover:border-cyan-500 hover:bg-cyan-500/10 transition-all duration-300"
+                >
+                  <Linkedin className="h-4 w-4 text-cyan-400 group-hover:text-cyan-300" />
+                  <span className="text-cyan-400 group-hover:text-cyan-300 font-mono text-sm">{""}</span>
+                </a>
+
+                <a
+                  href="mailto:cipherman.in"
+                  className="group flex items-center gap-2 px-3 py-2 bg-gray-800 border border-yellow-500/30 rounded-lg hover:border-yellow-500 hover:bg-yellow-500/10 transition-all duration-300"
+                >
+                  <Mail className="h-4 w-4 text-yellow-400 group-hover:text-yellow-300" />
+                  <span className="text-yellow-400 group-hover:text-yellow-300 font-mono text-sm">{""}</span>
+                </a>
+
+                <a
+                  href="https://instagram.com/gokulamaran"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="group flex items-center gap-2 px-3 py-2 bg-gray-800 border border-pink-500/30 rounded-lg hover:border-pink-500 hover:bg-pink-500/10 transition-all duration-300"
+                >
+                  <Instagram className="h-4 w-4 text-pink-400 group-hover:text-pink-300" />
+                  <span className="text-pink-400 group-hover:text-pink-300 font-mono text-sm">{""}</span>
+                </a>
+              </div>
+
+              {/* Additional Info */}
+              <div className="text-xs text-gray-500 font-mono">
+                <span className="text-red-400">[DEVELOPER]</span> B.E Cyber Security Student |
+                <span className="text-green-400"> Anna University R2023</span>
+              </div>
+
+              {/* System Status */}
+              <div className="flex items-center justify-center gap-4 text-xs font-mono">
+                <span className="text-gray-500">System Status:</span>
+                <span className="text-green-400 animate-pulse">● ONLINE</span>
+                <span className="text-gray-500">|</span>
+                <span className="text-cyan-400">Security Level: AUTHORIZED</span>
+                <span className="text-gray-500">|</span>
+                <span className="text-yellow-400">Build: Cipherman </span>
+              </div>
+            </div>
+          </div>
+        </motion.footer>
       </div>
     </div>
   )
