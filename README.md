@@ -26,7 +26,7 @@ Includes subject codes, names, and credits for:
 - Excludes non-credit courses (Library, Mentoring)
 
 Example:
-```ts
+\`\`\`ts
 {
   code: "CH3124",
   name: "Engineering Chemistry",

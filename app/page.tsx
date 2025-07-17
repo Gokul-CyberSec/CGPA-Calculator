@@ -412,7 +412,7 @@ export default function CGPACalculator() {
               {/* Additional Info */}
               <div className="text-xs text-gray-500 font-mono">
                 <span className="text-red-400">[DEVELOPER]</span> B.E Cyber Security Student |
-                <span className="text-green-400"> Anna University R2023</span>
+                <span className="text-green-400">    SRM~vec$cys R2023</span>
               </div>
 
               {/* System Status */}
