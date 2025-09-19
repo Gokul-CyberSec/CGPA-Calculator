@@ -4,7 +4,7 @@ export interface Subject {
   credits: number
 }
 
-export type Grade = "O" | "A+" | "A" | "B+" | "B" | "C" | "U" | "SA"
+export type Grade = "O" | "A+" | "A" | "B+" | "B" | "C" | "U" | "RA"
 
 export const gradeScale: Record<Grade, number> = {
   O: 10,
@@ -14,7 +14,7 @@ export const gradeScale: Record<Grade, number> = {
   B: 6,
   C: 5,
   U: 0,
-  SA: 0,
+  RA: 0,
 }
 
 export const subjectData: Record<string, Subject[]> = {
@@ -47,9 +47,9 @@ export const subjectData: Record<string, Subject[]> = {
     { code: "CY3362", name: "Introduction to Cyber Security", credits: 3 },
     { code: "IT3361", name: "Programming and Data Structures", credits: 3 },
     { code: "MA3322", name: "Discrete Mathematics", credits: 3 },
-    { code: "CS3364", name: "OOP Lab", credits: 1 },
-    { code: "CY3363", name: "Networks Lab", credits: 1 },
-    { code: "IT33633", name: "Data Structures Lab", credits: 1 },
+    { code: "CS3364", name: "OOP Lab", credits: 1.5 },
+    { code: "CY3363", name: "Networks Lab", credits: 1.5 },
+    { code: "IT3363", name: "Data Structures Lab", credits: 1.5 },
   ],
   "4": [
     { code: "CS3463", name: "Database Management Systems", credits: 3 },
@@ -58,9 +58,9 @@ export const subjectData: Record<string, Subject[]> = {
     { code: "CY3463", name: "Cyber Laws and Ethics", credits: 3 },
     { code: "IT3461", name: "Operating Systems", credits: 3 },
     { code: "MA3422", name: "Applied Math for Info Science", credits: 2 },
-    { code: "CS3466", name: "DBMS Lab", credits: 1 },
-    { code: "CY3464", name: "Open Source Lab", credits: 1 },
-    { code: "IT3464", name: "OS Lab", credits: 1 },
+    { code: "CS3466", name: "DBMS Lab", credits: 1.5 },
+    { code: "CY3464", name: "Open Source Lab", credits: 1.5 },
+    { code: "IT3464", name: "OS Lab", credits: 1.5 },
   ],
   "5": [
     { code: "CE3531", name: "Environmental Studies", credits: 2 },
@@ -70,8 +70,8 @@ export const subjectData: Record<string, Subject[]> = {
     { code: "CY3563", name: "Information Warfare", credits: 3 },
     { code: "PCY301", name: "Modern Cryptography", credits: 3 },
     { code: "PCY302", name: "Cryptocurrency and Blockchain", credits: 3 },
-    { code: "CS3567", name: "Full Stack Dev Lab", credits: 1 },
-    { code: "CY3565", name: "Biometric Image Processing Lab", credits: 1 },
-    { code: "CY3566", name: "Ethical Hacking Lab", credits: 1 },
+    { code: "CS3567", name: "Full Stack Dev Lab", credits: 1.5 },
+    { code: "CY3565", name: "Biometric Image Processing Lab", credits: 1.5 },
+    { code: "CY3566", name: "Ethical Hacking Lab", credits: 1.5 },
   ],
 }

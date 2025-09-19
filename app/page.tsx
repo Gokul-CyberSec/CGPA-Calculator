@@ -1,5 +1,6 @@
 "use client"
 
+import React from "react"
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import {
@@ -23,6 +24,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import Loader from "@/components/ui/loader"
 import { subjectData, gradeScale, type Grade } from "@/utils/data"
 
 type CalculatorMode = "semester" | "overall"
@@ -41,6 +43,15 @@ export default function CGPACalculator() {
   const [showLegend, setShowLegend] = useState(false)
   const [terminalText, setTerminalText] = useState("")
   const [showMatrix, setShowMatrix] = useState(false)
+  const [isLoading, setIsLoading] = useState(true)
+
+  // Loading effect - show loader for 3 seconds
+  useEffect(() => {
+    const loadingTimer = setTimeout(() => {
+      setIsLoading(false)
+    }, 3000)
+    return () => clearTimeout(loadingTimer)
+  }, [])
 
   // Terminal typing effect
   useEffect(() => {
@@ -150,6 +161,22 @@ export default function CGPACalculator() {
 
   return (
     <div className="min-h-screen bg-black text-green-400 font-mono relative overflow-hidden">
+      {/* Loading Screen */}
+      {isLoading ? (
+        <div className="fixed inset-0 bg-black flex flex-col items-center justify-center z-50">
+          <div className="text-center mb-8">
+            <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-green-400 via-cyan-400 to-blue-400 mb-4">
+              CGPA CALCULATOR
+            </h1>
+            <p className="text-cyan-400 text-lg mb-8">Initializing Security Protocols...</p>
+          </div>
+          <Loader />
+          <div className="mt-8 text-sm text-gray-500">
+            <div className="animate-pulse">Loading cyber security framework...</div>
+          </div>
+        </div>
+      ) : (
+        <>
       {/* Matrix Rain Background */}
       {showMatrix && (
         <div className="fixed inset-0 pointer-events-none opacity-10 z-0">
@@ -428,6 +455,8 @@ export default function CGPACalculator() {
           </div>
         </motion.footer>
       </div>
+        </>
+      )}
     </div>
   )
 }
